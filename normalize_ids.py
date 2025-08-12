@@ -2,15 +2,15 @@ import json
 import re
 
 def parse_ids_line(line):
-    # Snort-like alert log example
-    # Example: "[**] [1:1000001:0] SQL Injection Attempt [**] [Priority: 1] {TCP} 192.168.1.2:1234 -> 10.0.0.5:80"
-    pattern = r'\[\*\*\] \[(?P<sid>\d+):(?P<gid>\d+):(?P<rev>\d+)\] (?P<message>.+) \[\*\*\] \[Priority: (?P<priority>\d+)\] \{(?P<protocol>\S+)\} (?P<src_ip>\S+):(?P<src_port>\d+) -> (?P<dst_ip>\S+):(?P<dst_port>\d+)'
+    # Snort-like alert example
+    # [**] [1:1000001:0] SQL Injection Attempt [**] [Priority: 1] {TCP} 192.168.1.2:1234 -> 10.0.0.5:80
+    pattern = r'\[\*\*\] \[(?P<gid>\d+):(?P<sid>\d+):(?P<rev>\d+)\] (?P<message>.+) \[\*\*\] \[Priority: (?P<priority>\d+)\] \{(?P<protocol>\S+)\} (?P<src_ip>\S+):(?P<src_port>\d+) -> (?P<dst_ip>\S+):(?P<dst_port>\d+)'
     match = re.match(pattern, line)
     if not match:
         return None
     data = match.groupdict()
     return {
-        "timestamp": None,  # Assume separate timestamp in real logs
+        "timestamp": None,
         "event_source": "ids",
         "src_ip": data["src_ip"],
         "dst_ip": data["dst_ip"],
