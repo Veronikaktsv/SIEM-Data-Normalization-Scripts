@@ -2,14 +2,13 @@ import json
 import re
 
 def parse_firewall_line(line):
-    # Example Cisco ASA log (simplified)
-    # Example: "2025-08-12T14:12:30Z ASA FW: SRC=10.0.0.1 DST=8.8.8.8 SPT=12345 DPT=53 PROTO=UDP"
+    # Example Cisco ASA log
+    # 2025-08-12T14:12:30Z ASA FW: SRC=10.0.0.1 DST=8.8.8.8 SPT=12345 DPT=53 PROTO=UDP
     pattern = r'(?P<timestamp>\S+) ASA FW: SRC=(?P<src_ip>\S+) DST=(?P<dst_ip>\S+) SPT=(?P<src_port>\d+) DPT=(?P<dst_port>\d+) PROTO=(?P<protocol>\S+)'
     match = re.match(pattern, line)
     if not match:
         return None
     data = match.groupdict()
-    # Normalize keys
     return {
         "timestamp": data["timestamp"],
         "event_source": "firewall",
